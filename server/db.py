@@ -8,7 +8,12 @@ DATABASE_URL = f"postgresql://{DB_USERNAME}:{DB_PASSWORD}@localhost:{DB_PORT}/{D
 engine = create_engine(DATABASE_URL, echo=True)
 
 def init_db():
+    print("Initializing database...")
     SQLModel.metadata.create_all(engine)
+
+def release_db():
+    print("Releasing database...")
+    SQLModel.metadata.drop_all(engine)
 
 def health_connection():
     with Session(engine) as session:
