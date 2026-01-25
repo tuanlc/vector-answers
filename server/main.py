@@ -1,6 +1,7 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from db import init_db, health_connection, release_db
+from rewrite import RewriteProvider, RewriteProvider, RewriteRequest
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -18,3 +19,8 @@ def read_root():
 def health_check():
     health_connection()
     return {"status": "healthy"}
+
+@app.post("/rewrite")
+def rewrite_endpoint(x: RewriteRequest):
+    print(f"Received text to rewrite: {x.text}")
+    return RewriteProvider().rewrite(x.text)
